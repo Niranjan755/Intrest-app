@@ -1,0 +1,130 @@
+<!DOCTYPE html><html lang="te">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>వడ్డీ లెక్కల కాలిక్యులేటర్</title>
+  <style>
+    body {
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      background-color: #141414;
+      color: #e5e5e5;
+      padding: 20px;
+      max-width: 500px;
+      margin: auto;
+    }
+    h2 {
+      text-align: center;
+      font-size: 26px;
+      margin-bottom: 20px;
+      color: #e50914;
+    }
+    label {
+      margin: 10px 0 5px;
+      font-size: 16px;
+      color: #ffffff;
+    }
+    input {
+      padding: 12px;
+      width: 100%;
+      box-sizing: border-box;
+      font-size: 16px;
+      border-radius: 4px;
+      border: none;
+      margin-bottom: 15px;
+    }
+    input:focus {
+      outline: 2px solid #e50914;
+    }
+    .result {
+      margin-top: 20px;
+      background-color: #333;
+      padding: 15px;
+      border-radius: 6px;
+      font-size: 18px;
+      color: #fff;
+    }
+    .lang-toggle {
+      text-align: right;
+      margin-bottom: 15px;
+    }
+    .lang-toggle button {
+      background-color: #e50914;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      font-size: 14px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .lang-toggle button:hover {
+      background-color: #b81d24;
+    }
+    @media (max-width: 600px) {
+      body {
+        padding: 15px;
+      }
+      h2 {
+        font-size: 22px;
+      }
+      .result {
+        font-size: 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="lang-toggle">
+    <button onclick="toggleLanguage()">English ↔ తెలుగు</button>
+  </div>  <h2 id="title">వడ్డీ లెక్కల కాలిక్యులేటర్</h2><label id="labelPrincipal" for="principal">మొత్తం రుణం (రూ):</label> <input type="number" id="principal" placeholder="10000">
+
+<label id="labelStartDate" for="startDate">అప్పు తీసుకున్న తేదీ:</label> <input type="date" id="startDate">
+
+<label id="labelEndDate" for="endDate">చెల్లించిన తేదీ:</label> <input type="date" id="endDate">
+
+<label id="labelRate" for="interestRate">వార్షిక వడ్డీ రేటు (%):</label> <input type="number" id="interestRate" placeholder="12">
+
+  <div class="result" id="result"></div>  <script>
+    let lang = 'te';
+
+    const inputs = document.querySelectorAll('input');
+    inputs.forEach(input => input.addEventListener('input', calculateInterest));
+
+    function calculateInterest() {
+      const principal = parseFloat(document.getElementById('principal').value);
+      const start = new Date(document.getElementById('startDate').value);
+      const end = new Date(document.getElementById('endDate').value);
+      const annualRate = parseFloat(document.getElementById('interestRate').value);
+
+      if (isNaN(principal) || isNaN(annualRate) || !start || !end || start >= end || annualRate <= 0) {
+        document.getElementById('result').innerHTML =
+          lang === 'te' ? 'దయచేసి అన్ని వివరాలను సరిగ్గా ఇవ్వండి' : 'Please enter all details correctly';
+        return;
+      }
+
+      const totalDays = (end - start) / (1000 * 60 * 60 * 24);
+      const timeInYears = totalDays / 365.25;
+      const interest = (principal * annualRate * timeInYears) / 100;
+      const totalAmount = principal + interest;
+
+      document.getElementById('result').innerHTML =
+        (lang === 'te'
+          ? `వడ్డీ రేటు: ${annualRate.toFixed(2)}%<br>వడ్డీ మొత్తం: ₹${interest.toFixed(2)}<br>మొత్తం చెల్లించవలసిన మొత్తం: ₹${totalAmount.toFixed(2)}`
+          : `Interest Rate: ${annualRate.toFixed(2)}%<br>Total Interest: ₹${interest.toFixed(2)}<br>Total Amount to Pay: ₹${totalAmount.toFixed(2)}`);
+    }
+
+    function toggleLanguage() {
+      lang = lang === 'te' ? 'en' : 'te';
+      document.getElementById('title').innerText =
+        lang === 'te' ? 'వడ్డీ లెక్కల కాలిక్యులేటర్' : 'Interest Calculator';
+      document.getElementById('labelPrincipal').innerText =
+        lang === 'te' ? 'మొత్తం రుణం (రూ):' : 'Loan Amount (₹):';
+      document.getElementById('labelStartDate').innerText =
+        lang === 'te' ? 'అప్పు తీసుకున్న తేదీ:' : 'Loan Start Date:';
+      document.getElementById('labelEndDate').innerText =
+        lang === 'te' ? 'చెల్లించిన తేదీ:' : 'Payment Date:';
+      document.getElementById('labelRate').innerText =
+        lang === 'te' ? 'వార్షిక వడ్డీ రేటు (%):' : 'Annual Interest Rate (%):';
+      calculateInterest();
+    }
+  </script></body>
+</html>
