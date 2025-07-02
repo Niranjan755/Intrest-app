@@ -4,10 +4,39 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>వడ్డీ లెక్కల కాలిక్యులేటర్</title>
   <style>
-    body {
+    body, html {
+      margin: 0;
+      padding: 0;
       font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
       background-color: #141414;
       color: #e5e5e5;
+      overflow: hidden;
+    }
+    #loader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+    #loader h1 {
+      font-size: 48px;
+      color: #e50914;
+      opacity: 0;
+      animation: tudum 2s ease-out forwards;
+    }
+    @keyframes tudum {
+      0% { opacity: 0; transform: scale(0.8); }
+      50% { opacity: 1; transform: scale(1.05); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+    #appContent {
+      display: none;
       padding: 20px;
       max-width: 500px;
       margin: auto;
@@ -60,7 +89,7 @@
       background-color: #b81d24;
     }
     @media (max-width: 600px) {
-      body {
+      #appContent {
         padding: 15px;
       }
       h2 {
@@ -73,17 +102,36 @@
   </style>
 </head>
 <body>
-  <div class="lang-toggle">
-    <button onclick="toggleLanguage()">English ↔ తెలుగు</button>
-  </div>  <h2 id="title">వడ్డీ లెక్కల కాలిక్యులేటర్</h2><label id="labelPrincipal" for="principal">మొత్తం రుణం (రూ):</label> <input type="number" id="principal" placeholder="10000">
+  <div id="loader">
+    <h1>Niranjan</h1>
+  </div>  <div id="appContent">
+    <div class="lang-toggle">
+      <button onclick="toggleLanguage()">English ↔ తెలుగు</button>
+    </div><h2 id="title">వడ్డీ లెక్కల కాలిక్యులేటర్</h2>
 
-<label id="labelStartDate" for="startDate">అప్పు తీసుకున్న తేదీ:</label> <input type="date" id="startDate">
+<label id="labelPrincipal" for="principal">మొత్తం రుణం (రూ):</label>
+<input type="number" id="principal" placeholder="10000">
 
-<label id="labelEndDate" for="endDate">చెల్లించిన తేదీ:</label> <input type="date" id="endDate">
+<label id="labelStartDate" for="startDate">అప్పు తీసుకున్న తేదీ:</label>
+<input type="date" id="startDate">
 
-<label id="labelRate" for="interestRate">వార్షిక వడ్డీ రేటు (%):</label> <input type="number" id="interestRate" placeholder="12">
+<label id="labelEndDate" for="endDate">చెల్లించిన తేదీ:</label>
+<input type="date" id="endDate">
 
-  <div class="result" id="result"></div>  <script>
+<label id="labelRate" for="interestRate">వార్షిక వడ్డీ రేటు (%):</label>
+<input type="number" id="interestRate" placeholder="12">
+
+<div class="result" id="result"></div>
+
+  </div>  <script>
+    window.onload = function() {
+      setTimeout(() => {
+        document.getElementById('loader').style.display = 'none';
+        document.getElementById('appContent').style.display = 'block';
+        document.body.style.overflow = 'auto';
+      }, 2500);
+    };
+
     let lang = 'te';
 
     const inputs = document.querySelectorAll('input');
